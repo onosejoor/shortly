@@ -1,4 +1,3 @@
-import axios from "axios";
 
 let shortUrl = document.getElementsByClassName("sh").length;
 let copy = document.getElementsByClassName("copy");

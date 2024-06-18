@@ -15,11 +15,10 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
-
 // to render home page
 app.get("/", (req, res) => {
   res.render("index.ejs", {
-    url: []
+    url: [],
   });
 });
 
@@ -51,7 +50,6 @@ app.post("/short", async (req, res) => {
     res.render("index.ejs", {
       url: url,
     });
-
   } catch (error) {
     res.render("index.ejs", {
       error: error.message,
