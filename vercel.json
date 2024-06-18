@@ -8,8 +8,8 @@
     ],
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "views/index.ejs"
+        "url": "/",
+        "dest": "./index.js"
       }
     ]
   }

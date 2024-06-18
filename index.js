@@ -19,7 +19,6 @@ app.get("/", (req, res) => {
   res.render("index", {
     url: url
   });
-  console.log(url);
 });
 
 // to create short url
@@ -28,7 +27,6 @@ app.post("/short", async (req, res) => {
   try {
 
   let userUrl = req.body.longUrl;
-console.log(userUrl);
 
   function truncateString(str, maxLength) {
     if (str.length > maxLength) {
