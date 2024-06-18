@@ -52,3 +52,8 @@ for (let i = 0; i < shortUrl; i++) {
     element.removeChild(storage);
   });
 }
+
+let stat = document.getElementById("stat");
+
+const id = document.createElement("div");
+id.innerHTML = "<div class="all" id="link"><div><p class="full"><%= url.long%></p></div><hr class="hr"><div class="sh"><h4 class="short"><%= url.short%></h4><button value="<%= url.short %>" class="copy">Copy</button></div ></div>"

@@ -13,11 +13,10 @@ let basrUrl = "https://cleanuri.com/api/v1/shorten";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("views", __dirname + "/views");
-app.set("view engine", "ejs"); 
+app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 
-let url = []
 // to render home page
 app.get("/", (req, res) => {
   res.render("index.ejs", {
@@ -50,12 +49,14 @@ let cater = truncateString(userUrl, 30);
 
   let result = response.data;
 
+  let url = [];
   url.push({id: url.length+1, long: cater, short: result.result_url});
   res.redirect("/");    
 
   } catch (error) {
     res.render("index.ejs", {
       url: url,
+      error: error.message
     });
   }
 
