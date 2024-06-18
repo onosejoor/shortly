@@ -1,22 +1,26 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-
+import {dirname} from "path";
+import {fileURLToPath} from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
 // For short URL //
 let basrUrl = "https://cleanuri.com/api/v1/shorten";
 
-app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.set("views", __dirname + "/views");
+app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
 
 
 let url = []
 // to render home page
 app.get("/", (req, res) => {
-  res.render("index", {
+  res.render("index.ejs", {
     url: url
   });
 });
@@ -43,7 +47,6 @@ let cater = truncateString(userUrl, 30);
 
   const response = await axios.post(basrUrl, `url=${userUrl
   }`, headersList);
-  console.log(response, response.data);
 
   let result = response.data;
 
