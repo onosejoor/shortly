@@ -16,10 +16,15 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
 // to render home page
+
 app.get("/", (req, res) => {
   res.render("index.ejs", {
     url: [],
   });
+});
+
+app.get("/short", (req, res) => {
+  res.redirect("/");
 });
 
 // to create short url
@@ -43,9 +48,8 @@ app.post("/short", async (req, res) => {
     const response = await axios.post(basrUrl, `url=${userUrl}`, headersList);
 
     let result = response.data;
-
     let url = [];
-    url.push({ id: url.length + 1, long: cater, short: result.result_url });
+ url.push({ id: url.length + 1, long: cater, short: result.result_url });
 
     res.render("index.ejs", {
       url: url,
