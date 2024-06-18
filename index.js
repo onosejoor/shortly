@@ -1,13 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import ejs from 'ejs';
+
 
 const app = express();
 const port = 3000;
 // For short URL //
 let basrUrl = "https://cleanuri.com/api/v1/shorten";
 
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
@@ -15,7 +16,7 @@ app.use(express.static("public"));
 let url = []
 // to render home page
 app.get("/", (req, res) => {
-  res.render("index.ejs", {
+  res.render("index", {
     url: url
   });
   console.log(url);
