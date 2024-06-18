@@ -51,7 +51,7 @@ let cater = truncateString(userUrl, 30);
 
   let url = [];
   url.push({id: url.length+1, long: cater, short: result.result_url});
-  res.redirect("/");    
+  res.redirect("/");     
 
   } catch (error) {
     res.render("index.ejs", {
