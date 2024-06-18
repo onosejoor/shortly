@@ -13,7 +13,7 @@ let basrUrl = "https://cleanuri.com/api/v1/shorten";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("views", __dirname + "/views");
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); 
 app.use(express.static(__dirname + "/public"));
 
 
