@@ -1,64 +1,190 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import pg from "pg";
+import session from "express-session";
+import env from "dotenv";
+import { login } from "./auth/login.js";
+import passport, { query } from "./auth/passport.js";
+import registerUser from "./auth/register.js";
+import { truncateString } from "./auth/passport.js";
+import { google } from "./auth/google.js";
 
 const app = express();
 const port = 3000;
+
+env.config();
+
+// for the PostgreSQL database connection
+const db = new pg.Client({
+  user: process.env.USER_NAME,
+  host: process.env.HOST,
+  password: process.env.PASSWORD,
+  database: process.env.DATA_BASE,
+  port: process.env.PORT,
+});
+
+db.connect();
+
 // For short URL //
 let basrUrl = "https://cleanuri.com/api/v1/shorten";
 
+// express and body parser middle ware
 app.use(bodyParser.urlencoded({ extended: true }));
-app.set("views", __dirname + "/views");
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
+app.use(express.static("public"));
 
+// session middle ware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    // cookie: {
+    //   maxAge: 1000 * 60 * 60,
+    // },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+let pass;
+let url = [];
 // to render home page
 
-app.get("/", (req, res) => {
-  res.render("index.ejs", {
-    url: [],
-  });
+app.get("/", async (req, res) => {
+  if (req.isAuthenticated()) {
+    pass = req.user;
+
+    // selects users links based on their email
+    const query2 = await query(pass);
+    url = query2;
+
+    // render home page
+    res.render("index.ejs", {
+      url: url,
+    });
+  } else {
+    res.render("index.ejs");
+  }
+});
+
+// get register page
+app.get("/register", (req, res) => {
+  res.render("register.ejs");
+});
+
+// get login page
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
 });
 
 app.get("/short", (req, res) => {
   res.redirect("/");
 });
 
-// to create short url
-app.post("/short", async (req, res) => {
+app.get(
+  "/oauth/google/shortly",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+app.post("/register", async (req, res) => {
   try {
-    let userUrl = req.body.longUrl;
+    //   get user email and password
+    const username = req.body.email;
+    const password = req.body.password;
 
-    function truncateString(str, maxLength) {
-      if (str.length > maxLength) {
-        return str.slice(0, maxLength - 3) + "...";
+    // use imported logic to register user
+    await registerUser(username, password, (error, user) => {
+      if (error) {
+        res.render("register.ejs", {
+          error: error,
+        });
+      } else {
+        req.login(user.email, (error) => {
+          // log's in user
+          if (error) {
+            console.log(error);
+          } else {
+            pass = user.email;
+            res.redirect("/");
+          }
+        });
       }
-      return str;
-    }
-
-    let cater = truncateString(userUrl, 30);
-    let headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/x-www-form-urlencoded",
-    };
-
-    const response = await axios.post(basrUrl, `url=${userUrl}`, headersList);
-
-    let result = response.data;
-    let url = [];
- url.push({ id: url.length + 1, long: cater, short: result.result_url });
-
-    res.render("index.ejs", {
-      url: url,
     });
   } catch (error) {
-    res.render("index.ejs", {
+    res.render("register.ejs", {
       error: error.message,
     });
+    console.log(error);
   }
+});
+
+// to handle login route
+app.post("/login", login);
+
+app.get("/oauth/google", google);
+
+// to create short url
+app.post("/short", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      // to get current user email
+      let user = req.user;
+      pass = user;
+
+      // user longUrl
+      let userUrl = req.body.longUrl;
+
+      // truncate string
+      let cater = truncateString(userUrl, 30);
+
+      // header for post requests
+      let headersList = {
+        Accept: "*/*",
+        "Content-Type": "application/x-www-form-urlencoded",
+      };
+
+      // API
+      const response = await axios.post(basrUrl, `url=${userUrl}`, headersList);
+
+      // API result
+      let result = response.data;
+
+      // logics
+      if (result.result_url < 1) {
+        throw new Error("Invalid Email!");
+      } else {
+        // insert into database
+        let result2 = db.query(
+          "insert into links (longLink, shortLink, user_email) values ($1, $2, $3)",
+          [cater, result.result_url, user]
+        );
+        // redirect to home page
+        res.redirect("/");
+      }
+
+      // to catch possible error
+    } catch (error) {
+      res.render("index.ejs", {
+        error: "Invalid Email",
+        url: url,
+      });
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
+// serializes user session into local storage
+passport.serializeUser((user, cb) => {
+  cb(null, user);
+});
+
+// deSerializes user session into local storage
+passport.deserializeUser((user, cb) => {
+  cb(null, user);
 });
 
 app.listen(port, () => {

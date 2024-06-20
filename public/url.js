@@ -53,3 +53,4 @@ for (let i = 0; i < shortUrl; i++) {
     element.removeChild(storage);
   });
 }
+

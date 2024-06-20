@@ -1,5 +1,8 @@
-.container {
-  max-width: 1400px;
+*{
+  font-family: "Poppins", sans-serif;
+}
+
+body {
   font-family: "Poppins", sans-serif;
   padding-top: 3%;
 }
@@ -133,7 +136,7 @@ button:hover {
   font-weight: 700;
 }
 
-.form > div{
+.form > div {
   width: 100%;
 }
 
@@ -169,15 +172,15 @@ button:hover {
 }
 
 .all {
-    padding: 3%;
-    background-color: white;
-    width: 85%;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    height: fit-content;
+  padding: 3%;
+  background-color: white;
+  width: 85%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  height: fit-content;
   .full {
     font-weight: 600;
   }
@@ -241,23 +244,22 @@ button:hover {
   padding-bottom: 2%;
   position: relative;
   z-index: 2;
-  box-shadow: 0px 0px 20px hsl(260, 8%, 14%);
+  box-shadow: 0px 0px 8px hsl(260, 8%, 14%);
 }
 
-.error{
+.error {
   font-style: italic;
   color: red;
   visibility: hidden;
 }
 
-.input2{
+.input2 {
   border: 2px solid red;
 }
 
-
-.copied{
-  background-color: hsl(257, 27%, 26%) ;
-  border: 2px solid hsl(257, 27%, 26%) ;
+.copied {
+  background-color: hsl(257, 27%, 26%);
+  border: 2px solid hsl(257, 27%, 26%);
 }
 
 .bold {
@@ -293,9 +295,11 @@ button:hover {
   div {
     display: block;
     text-align: center;
+    padding: 3%;
   }
 }
 #boost > div > h3 {
+  padding: 2%;
   font-size: xx-large;
   color: white;
 }
@@ -370,7 +374,54 @@ h5 {
   display: flex !important;
 }
 
+form[action="/register"],
+form[action="/login"] {
+  padding: 2%;
+  margin: 5%;
+  display: flex;
+  margin: 2% auto;
+  flex-direction: column;
+  background-color: white;
+  width: 50%;
+  font-weight: 500;
+  box-shadow: 0px 0px 10px gray;
+  text-align: start;
+}
 
+form[action="/register"] > input,
+form[action="/register"] > input:focus {
+  margin-bottom: 10px;
+  height: 30px;
+  border: 0.5x solid black;
+  padding-left: 1%;
+  border-radius: 5px;
+}
+
+form[action="/login"] > input,
+form[action="/login"] > input:focus {
+  margin-bottom: 10px;
+  height: 30px;
+  border: 0.5x solid black;
+  padding-left: 1%;
+  border-radius: 5px;
+}
+
+form[action="/login"] > button,
+form[action="/register"] > button {
+  width: fit-content;
+  padding: 1.5% 20px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  background-color: hsl(257, 27%, 26%);
+}
+
+a[href="/oauth/google/shortly"] > button {
+  padding: 1.9%;
+  border: 1px solid;
+  border-radius: 5px;
+  background-color: hsl(257, 27%, 26%);
+}
 
 @media (max-width: 800px) {
   .svg-icon {
@@ -382,15 +433,15 @@ h5 {
     margin-top: 2%;
   }
 
-  .copy{
-   width: 100%; 
+  .copy {
+    width: 100%;
   }
 
-  #stat{
+  #stat {
     padding-top: 25%;
   }
 
-  form {
+  .form {
     flex-direction: column;
     gap: 10px;
   }
@@ -410,8 +461,6 @@ h5 {
     .nav:hover {
       color: white;
     }
-
-
 
     .right {
       margin-left: 0%;
@@ -466,7 +515,7 @@ h5 {
     transform: translate(-50%);
   }
 
-  .hr{
+  .hr {
     width: 100%;
   }
 
@@ -529,6 +578,7 @@ h5 {
 
   .foo {
     text-align: center;
+    padding-top: 5%;
   }
 
   .social {
@@ -538,6 +588,7 @@ h5 {
 
   .grid > div {
     padding-top: 4%;
+    margin-bottom: 5%;
   }
 
   .brand {
@@ -560,8 +611,23 @@ h5 {
 }
 
 @media (max-width: 900px) {
-  #header{
+  #header {
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  form[action="/register"],
+  form[action="/login"] {
+    width: 90%;
+    min-height: 300px;
+  }
+
+  form[action="/register"] > input,
+form[action="/login"] > input {
+  margin-bottom: 20px;
+  height: 40px;
+  border: 0.5x solid black;
+  padding-left: 1%;
+  border-radius: 5px;
+}
 }

@@ -1,0 +1,21 @@
+<%-include("partials/header.ejs") %>
+
+<form action="/login" method="post">
+  <h1>Login</h1>
+  <label for="email">Email</label>
+  <input type="email" name="username" id="email" autocomplete="email" />
+  <label for="password">Password</label>
+  <input
+    type="password"
+    name="password"
+    id="password"
+    required
+    placeholder="<%= locals.error ? error: 'Enter password' %>" />
+    <button type="submit" id="btn-register">Login</button>
+    <a href="/oauth/google/shortly" class="google"><button type="submit">Log-in with Google</button></a>        
+    </div>
+</form>
+
+
+
+<%-include("partials/footer.ejs") %>
