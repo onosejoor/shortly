@@ -1,110 +1,112 @@
 <%-include("partials/header.ejs") %>
 
-      <section id="header" class="head">
-        <img
-          src="/images/illustration-working.svg"
-          class="head-img"
-          alt="destop-img" />
-        <div class="header">
-          <h1>More than just shorter links</h1>
+<section id="header" class="head">
+  <img
+    src="/images/illustration-working.svg"
+    class="head-img"
+    alt="destop-img" />
+  <div class="header">
+    <h1>More than just shorter links</h1>
 
-          <h3>
-            Build your brand’s recognition and get detailed insights on how your
-            links are performing.
-          </h3>
+    <h3>
+      Build your brand’s recognition and get detailed insights on how your links
+      are performing.
+    </h3>
 
-          <a href="#starter"><button class="starter">Get Started</button></a>
-        </div>
-      </section>
-      <div class="shorten">
-        <div class="sho">
-          <form action="/short" method="post" class="form">
-            <div>
-              <input
-                name="longUrl"
-                id="input"
-                type="text"
-                placeholder="<%= locals.error ? error:'Shorten a link here...' %>"
-                class="input"
-                required />
-              <h5 class="error">Please add a link</h5>
-            </div>
-
-            <button class="shorten-btn" type="submit">Shorten It!</button>
-          </form>
-        </div>
+    <a href="#starter"><button class="starter">Get Started</button></a>
+  </div>
+</section>
+<div class="shorten">
+  <div class="sho">
+    <form action="/short" method="post" class="form">
+      <div>
+        <input
+          name="longUrl"
+          id="input"
+          type="text"
+          placeholder="<%= locals.error ? error:'Shorten a link here...' %>"
+          class="input"
+          required />
+        <h5 class="error">Please add a link</h5>
       </div>
-      <section id="stat">
-        <%if(locals.url) { %> <% url.forEach(url => { %>
-        <div class="link">
-          <div class="all" id="link">
-            <div>
-              <p class="full"><%= url.longlink%></p>
-            </div>
 
-            <hr class="hr" />
-            <div class="sh">
-              <h4 class="short"><%= url.shortlink%></h4>
-              <button value="<%= url.short %>" class="copy">Copy</button>
-            </div>
-          </div>
-        </div>
-        <% }); %>
-         <% } %>
-        <div class="ad">
-          <h2 class="advanced">Advanced Statistics</h2>
-          <p class="adv">
-            Track how your links are performing across the web with our advanced
-            statistics dashboard.
-          </p>
-        </div>
+      <button class="shorten-btn" type="submit">Shorten It!</button>
+    </form>
+  </div>
+</div>
+<section id="stat">
+  <%if(locals.url) { %> <% url.forEach(url => { %>
+  <div class="link">
+    <div class="all" id="link">
+      <div>
+        <p class="full"><%= url.longlink%></p>
+      </div>
 
-        <div id="flag">
-          <div class="brand flager">
-            <img
-              class="illu"
-              src="/images/icon-brand-recognition.svg"
-              alt="brand regognition" />
-            <h4 class="bold con">Brand Recognition</h4>
+      <hr class="hr" />
+      <div class="sh">
+        <h4 class="short"><%= url.shortlink%></h4>
+        <button value="<%= url.short %>" class="copy">Copy</button>
+        <form action="/delete" method="post" class="del">
+          <button name="deletedId" value="<%= url.id %>" class="delete">
+            Delete
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <% }); %> <% } %>
+  <div class="ad">
+    <h2 class="advanced">Advanced Statistics</h2>
+    <p class="adv">
+      Track how your links are performing across the web with our advanced
+      statistics dashboard.
+    </p>
+  </div>
 
-            <p class="state con">
-              Boost your brand recognition with each click. Generic links don’t
-              mean a thing. Branded links help instil confidence in your
-              content.
-            </p>
-          </div>
-          <div class="details flager">
-            <img
-              class="illu"
-              src="/images/icon-detailed-records.svg"
-              alt="detailed-records" />
-            <h4 class="bold con">Detailed Records</h4>
-            <p class="state con">
-              Gain insights into who is clicking your links. Knowing when and
-              where people engage with your content helps inform better
-              decisions
-            </p>
-          </div>
-          <div class="line"></div>
-          <div class="customizable flager">
-            <img
-              class="illu"
-              src="/images/icon-fully-customizable.svg"
-              alt="icon-fully-customizable" />
-            <h4 class="bold con">Fully Customizable</h4>
-            <p class="state con">
-              Improve brand awareness and content discoverability through
-              customizable links, supercharging audience engagement.
-            </p>
-          </div>
-        </div>
-      </section>
+  <div id="flag">
+    <div class="brand flager">
+      <img
+        class="illu"
+        src="/images/icon-brand-recognition.svg"
+        alt="brand regognition" />
+      <h4 class="bold con">Brand Recognition</h4>
 
-      <section id="boost">
-        <div>
-          <h3>Boost your links today</h3>
-          <button class="boost">Get Started</button>
-        </div>
-      </section>
+      <p class="state con">
+        Boost your brand recognition with each click. Generic links don’t mean a
+        thing. Branded links help instil confidence in your content.
+      </p>
+    </div>
+    <div class="details flager">
+      <img
+        class="illu"
+        src="/images/icon-detailed-records.svg"
+        alt="detailed-records" />
+      <h4 class="bold con">Detailed Records</h4>
+      <p class="state con">
+        Gain insights into who is clicking your links. Knowing when and where
+        people engage with your content helps inform better decisions
+      </p>
+    </div>
+    <div class="line"></div>
+    <div class="customizable flager">
+      <img
+        class="illu"
+        src="/images/icon-fully-customizable.svg"
+        alt="icon-fully-customizable" />
+      <h4 class="bold con">Fully Customizable</h4>
+      <p class="state con">
+        Improve brand awareness and content discoverability through customizable
+        links, supercharging audience engagement.
+      </p>
+    </div>
+  </div>
+</section>
 
-      <%-include("partials/footer.ejs") %>
+<section id="boost">
+  <div>
+    <h3>Boost your links today</h3>
+    <button class="boost">Get Started</button>
+  </div>
+</section>
+
+<%-include("partials/footer.ejs") %>

@@ -1,15 +1,14 @@
-*{
+* {
   font-family: "Poppins", sans-serif;
 }
 
-body {
+.container {
   font-family: "Poppins", sans-serif;
   padding-top: 3%;
 }
 
 section {
   padding-bottom: 8%;
-  max-width: 1400px;
   padding: 2%;
 }
 
@@ -213,6 +212,18 @@ button:hover {
   width: fit-content;
 }
 
+.delete {
+  padding: 7px 20px;
+  border-radius: 4px;
+  border: 1px solid hsl(180, 66%, 49%);
+  width: fit-content;
+  background-color: hsl(257, 27%, 26%);
+}
+
+.delete:hover {
+  background-color: hsl(255, 11%, 22%);
+}
+
 .ad {
   text-align: center;
   margin: 0.5% auto;
@@ -299,7 +310,6 @@ button:hover {
   }
 }
 #boost > div > h3 {
-  padding: 2%;
   font-size: xx-large;
   color: white;
 }
@@ -400,7 +410,7 @@ form[action="/register"] > input:focus {
 form[action="/login"] > input,
 form[action="/login"] > input:focus {
   margin-bottom: 10px;
-  height: 30px;
+  height: 40px;
   border: 0.5x solid black;
   padding-left: 1%;
   border-radius: 5px;
@@ -424,6 +434,10 @@ a[href="/oauth/google/shortly"] > button {
 }
 
 @media (max-width: 800px) {
+  #boost > div > h3 {
+    padding: 2%;
+  }
+
   .svg-icon {
     display: flex;
     margin-left: auto;
@@ -434,6 +448,11 @@ a[href="/oauth/google/shortly"] > button {
   }
 
   .copy {
+    width: 100%;
+  }
+
+  .delete,
+  .del {
     width: 100%;
   }
 
@@ -623,11 +642,29 @@ a[href="/oauth/google/shortly"] > button {
   }
 
   form[action="/register"] > input,
-form[action="/login"] > input {
-  margin-bottom: 20px;
-  height: 40px;
-  border: 0.5x solid black;
-  padding-left: 1%;
-  border-radius: 5px;
+  form[action="/login"] > input {
+    margin-bottom: 20px;
+    height: 40px;
+    border: 0.5x solid black;
+    padding-left: 1%;
+    border-radius: 5px;
+  }
 }
+
+@media (min-width: 1500px) {
+  .flager {
+    max-width: 400px;
+  }
+
+  #header {
+    justify-content: space-between;
+  }
+
+  #boost > div > h3 {
+    font-size: 50px;
+  }
+
+  .boost {
+    font-size: 32px;
+  }
 }

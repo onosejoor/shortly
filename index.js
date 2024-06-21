@@ -9,6 +9,7 @@ import passport, { query } from "./auth/passport.js";
 import registerUser from "./auth/register.js";
 import { truncateString } from "./auth/passport.js";
 import { google } from "./auth/google.js";
+import { isValidURL } from "./auth/passport.js";
 
 const app = express();
 const port = 3000;
@@ -54,11 +55,9 @@ let url = [];
 app.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     pass = req.user;
-
     // selects users links based on their email
     const query2 = await query(pass);
     url = query2;
-
     // render home page
     res.render("index.ejs", {
       url: url,
@@ -124,6 +123,34 @@ app.post("/register", async (req, res) => {
 // to handle login route
 app.post("/login", login);
 
+app.post("/delete", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      // to get user id to delete
+      let deleteValue = req.body.deletedId;
+
+      //  query to delete
+      await db.query("delete from links where id = $1", [deleteValue]);
+
+      res.redirect("/");
+
+      // error handler
+    } catch (error) {
+      console.log(error);
+      res.render("index.ejs", {
+        url: url,
+        error: error.message,
+      });
+    }
+  } else {
+    res.redirect("/");
+  }
+});
+
+app.get("/delete", (req, res) => {
+  res.redirect("/");
+});
+
 app.get("/oauth/google", google);
 
 // to create short url
@@ -145,30 +172,38 @@ app.post("/short", async (req, res) => {
         Accept: "*/*",
         "Content-Type": "application/x-www-form-urlencoded",
       };
+      isValidURL(userUrl);
 
-      // API
-      const response = await axios.post(basrUrl, `url=${userUrl}`, headersList);
+      try {
+        // API
+        const response = await axios.post(
+          basrUrl,
+          `url=${userUrl}`,
+          headersList
+        );
 
-      // API result
-      let result = response.data;
+        // API result
+        let result = response.data;
 
-      // logics
-      if (result.result_url < 1) {
-        throw new Error("Invalid Email!");
-      } else {
         // insert into database
         let result2 = db.query(
           "insert into links (longLink, shortLink, user_email) values ($1, $2, $3)",
           [cater, result.result_url, user]
         );
+
         // redirect to home page
         res.redirect("/");
+      } catch (error) {
+        res.render("index.ejs", {
+          error: "This link can't be shortened",
+          url: url,
+        });
       }
 
       // to catch possible error
     } catch (error) {
       res.render("index.ejs", {
-        error: "Invalid Email",
+        error: error.message || "This link can't be shortened",
         url: url,
       });
     }

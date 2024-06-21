@@ -16,6 +16,14 @@ const db = new pg.Client({
 
 db.connect();
 
+export function isValidURL(str) {
+  if(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(str)) {
+console.log('YES');
+   } else {
+    throw new Error ("invalid Email!");
+   }
+}
+
 export function truncateString(str, maxLength) {
   if (str.length > maxLength) {
     return str.slice(0, maxLength - 3) + "...";
@@ -25,7 +33,7 @@ export function truncateString(str, maxLength) {
 
 export async function query(currUserEmail) {
   let result = await db.query(
-    "select longLink, shortLink from links join users on links.user_email = users.email where users.email = $1",
+    "select links.id, longLink, shortLink from links join users on links.user_email = users.email where users.email = $1",
     [currUserEmail]
   );
   let response = result.rows;
@@ -85,7 +93,7 @@ passport.use(
       // to check is database result is not null
       if (response.length === 0) {
         // throw new Error(`${username} is not registered on Shortly!`);
-        return cb(null, false, `${username} is not registered on Shortly!`);
+        return cb(null, false);
       }
 
       try {
