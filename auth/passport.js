@@ -7,11 +7,11 @@ import pg from "pg";
 env.config();
 
 const db = new pg.Client({
-  user: process.env.USER_NAME,
-  host: process.env.HOST,
-  password: process.env.PASSWORD,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  password: process.env.DB_PASSWORD,
   database: process.env.DATA_BASE,
-  port: process.env.PORT,
+  port: process.env.DB_PORT,
 });
 
 db.connect();
