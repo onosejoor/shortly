@@ -7,21 +7,20 @@ import pg from "pg";
 env.config();
 
 const db = new pg.Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DATA_BASE,
-  port: process.env.DB_PORT,
+  connectionString: process.env.CONNECTION_STRING,
 });
-
 db.connect();
 
 export function isValidURL(str) {
-  if(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(str)) {
-console.log('YES');
-   } else {
-    throw new Error ("invalid Email!");
-   }
+  if (
+    /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
+      str
+    )
+  ) {
+    console.log("YES");
+  } else {
+    throw new Error("invalid Email!");
+  }
 }
 
 export function truncateString(str, maxLength) {
@@ -62,9 +61,8 @@ passport.use(
             "insert into users (email, password) values($1, $2) returning *",
             [userEmail.value, "google"]
           );
-          let secIn = insert.rows[0]
+          let secIn = insert.rows[0];
           return cb(null, secIn.email);
-
         } else {
           return cb(null, userEmail.value);
         }

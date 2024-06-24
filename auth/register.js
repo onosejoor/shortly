@@ -4,11 +4,7 @@ import bcrypt from "bcrypt";
 env.config();
 
 const db = new pg.Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DATA_BASE,
-  port: process.env.DB_PORT,
+  connectionString: process.env.CONNECTION_STRING,
 });
 
 db.connect();
