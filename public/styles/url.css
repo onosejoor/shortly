@@ -133,7 +133,7 @@ h1{
   border: 1px solid rgb(255, 255, 255);
 }
 .input:focus {
-  outline: 5px solid hsl(257, 27%, 26%);
+  outline: 1px solid hsl(257, 27%, 26%);
 }
 .input::placeholder {
   font-size: 15px;
@@ -142,6 +142,7 @@ h1{
 
 .form > div {
   width: 100%;
+  padding-left: 2%;
 }
 
 .shorten-btn {
@@ -389,6 +390,10 @@ h5 {
   display: flex !important;
 }
 
+.block{
+  display: block;
+}
+
 .formWrapper{
   background-color: white;
   padding: 2%;
@@ -408,6 +413,7 @@ form[action="/login"] {
   text-align: start;
   border: none;
   display: flex;
+  margin-bottom: 1%;
 }
 
 form[action="/register"] > input,
@@ -438,6 +444,21 @@ form[action="/register"] > button {
   background-color: hsl(257, 27%, 26%);
 }
 
+.loader {
+  display: none;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid hsl(180, 71%, 73%); /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .forms{
   display: flex;
 }
@@ -452,6 +473,18 @@ form[action="/oauth/google/shortly"] > button {
 @media (max-width: 800px) {
   #boost > div > h3 {
     padding: 2%;
+  }
+
+  .form > div {
+    padding-left: 0;
+  }
+  
+  .loader{
+    position: absolute;
+    left: 40%;
+    right: 50%;
+    transform: translate(-50%);
+    border-top: 16px solid hsl(256, 10%, 45%);
   }
 
   .svg-icon {
@@ -548,6 +581,10 @@ form[action="/oauth/google/shortly"] > button {
     left: 50%;
     right: 50%;
     transform: translate(-50%);
+  }
+
+  .form > div {
+    padding-left: 0;
   }
 
   .hr {
@@ -651,19 +688,8 @@ form[action="/oauth/google/shortly"] > button {
     justify-content: center;
   }
 
-  form[action="/register"],
-  form[action="/login"] {
+  .formWrapper{
     width: 90%;
-    min-height: 300px;
-  }
-
-  form[action="/register"] > input,
-  form[action="/login"] > input {
-    margin-bottom: 20px;
-    height: 40px;
-    border: 0.5x solid black;
-    padding-left: 1%;
-    border-radius: 5px;
   }
 }
 

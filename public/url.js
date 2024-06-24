@@ -1,6 +1,8 @@
-
+const shortBtn = document.querySelector(".shorten-btn");
 let shortUrl = document.getElementsByClassName("sh").length;
 let copy = document.getElementsByClassName("copy");
+const loader = document.querySelector(".loader");
+const input = document.querySelector(".input");
 
 // For Nav Bar //
 
@@ -54,3 +56,12 @@ for (let i = 0; i < shortUrl; i++) {
   });
 }
 
+// for the loader
+shortBtn.addEventListener("click", function () {
+  if (input.value.length === 0) {
+    loader.style.display = "none";
+  } else {
+    loader.style.display = "block";
+  }
+
+});

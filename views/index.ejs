@@ -18,6 +18,7 @@
 </section>
 <div class="shorten">
   <div class="sho">
+    <div class="loader"></div>
     <form action="/short" method="post" class="form">
       <div>
         <input
@@ -27,7 +28,6 @@
           placeholder="<%= locals.error ? error:'Shorten a link here...' %>"
           class="input"
           required />
-        <h5 class="error">Please add a link</h5>
       </div>
 
       <button class="shorten-btn" type="submit">Shorten It!</button>
