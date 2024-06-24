@@ -11,16 +11,13 @@ const db = new pg.Client({
 });
 db.connect();
 
+
 export function isValidURL(str) {
-  if (
-    /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
-      str
-    )
-  ) {
-    console.log("YES");
-  } else {
-    throw new Error("invalid Email!");
-  }
+  if(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(str)) {
+console.log('YES');
+   } else {
+    throw new Error ("invalid Email!");
+   }
 }
 
 export function truncateString(str, maxLength) {
@@ -46,7 +43,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/oauth/google",
+      callbackURL: "https://shortly-g15x.onrender.com/google",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
@@ -61,8 +58,9 @@ passport.use(
             "insert into users (email, password) values($1, $2) returning *",
             [userEmail.value, "google"]
           );
-          let secIn = insert.rows[0];
+          let secIn = insert.rows[0]
           return cb(null, secIn.email);
+
         } else {
           return cb(null, userEmail.value);
         }

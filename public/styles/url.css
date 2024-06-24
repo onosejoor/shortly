@@ -2,8 +2,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+body{
+  width: 100vw;
+}
 .container {
-  font-family: "Poppins", sans-serif;
   padding-top: 3%;
 }
 
