@@ -9,6 +9,7 @@ env.config();
 const db = new pg.Client({
   connectionString: process.env.CONNECTION_STRING,
 });
+console.log(db);
 db.connect();
 
 
@@ -43,7 +44,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://shortly-g15x.onrender.com/google",
+      callbackURL: "https://shortly-g15x.onrender.com/oauth/google",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {

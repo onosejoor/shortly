@@ -1,12 +1,23 @@
 <%-include("partials/header.ejs") %>
 
- <form action="/register" method="post">
+<div class="formWrapper">
+  <form action="/register" method="post">
     <h1>Register</h1>
     <label for="email">Email</label>
-    <input type="email" name="email" id="email" autocomplete="email" required>
+    <input type="email" name="email" id="email" autocomplete="email" required />
     <label for="password">Password</label>
-    <input type="password" name="password" id="password" required placeholder="<%= locals.error ? error: 'Enter password' %>">
+    <input
+      type="password"
+      name="password"
+      id="password"
+      required
+      placeholder="<%= locals.error ? error: 'Enter password' %>" />
     <button type="submit" id="btn-register">Register</button>
-    <a href="/oauth/google/shortly" class="google"><button type="submit">Sign-in with Google</button></a>
- </form>
+  </form>
+  <form action="/oauth/google/shortly" method="get">
+    <button class="google">Log-in with Google</button>
+  </form>
+</div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/url.js"></script>
