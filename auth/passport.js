@@ -17,7 +17,7 @@ export function isValidURL(str) {
   if(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(str)) {
 console.log('YES');
    } else {
-    throw new Error ("invalid Email!");
+    throw new Error ("invalid URL!");
    }
 }
 
@@ -44,7 +44,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://shortly-g15x.onrender.com/google",
+      callbackURL: "https://shortly-g15x.onrender.com/oauth/google",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
