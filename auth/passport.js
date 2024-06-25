@@ -79,7 +79,9 @@ passport.use(
   // new strategy (local)
   new Strategy(async function verify(username, password, cb) {
     try {
+      
       // select data from table
+
 
       let user = await db.query("select *  from users where email = $1", [
         username,
