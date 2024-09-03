@@ -4,6 +4,8 @@ let copy = document.getElementsByClassName("copy");
 const loader = document.querySelector(".loader");
 const input = document.querySelector(".input");
 
+
+
 // For Nav Bar //
 
 function navBar() {
@@ -57,11 +59,21 @@ for (let i = 0; i < shortUrl; i++) {
 }
 
 // for the loader
-shortBtn.addEventListener("click", function () {
-  if (input.value.length === 0) {
+shortBtn.addEventListener("click", function (e) {
+  if (input.value.trim() === "") {
+    e.preventDefault();
     loader.style.display = "none";
-  } else {
+    input.classList.add("input2")
+    document.querySelector(".inputError").style.display = "block"
+  } else{
     loader.style.display = "block";
+    input.classList.remove("input2")
+        document.querySelector(".inputError").style.display = "none"
   }
 
 });
+
+input.addEventListener("change", () => {
+      input.classList.remove("input2")
+    document.querySelector(".inputError").style.display = "none"
+})

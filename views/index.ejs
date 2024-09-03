@@ -26,8 +26,8 @@
           id="input"
           type="text"
           placeholder="<%= locals.error ? error:'Shorten a link here...' %>"
-          class="input"
-          required />
+          class="input" />
+          <h5 class="inputError">Enter Your Url </h5>
       </div>
 
       <button class="shorten-btn" type="submit">Shorten It!</button>
@@ -39,12 +39,12 @@
   <div class="link">
     <div class="all" id="link">
       <div>
-        <p class="full"><%= url.longlink%></p>
+        <p class="full"><%= url.long_link%></p>
       </div>
 
       <hr class="hr" />
       <div class="sh">
-        <h4 class="short"><%= url.shortlink%></h4>
+        <h4 class="short"><%= url.short_link%></h4>
         <button value="<%= url.short %>" class="copy">Copy</button>
         <form action="/delete" method="post" class="del">
           <button name="deletedId" value="<%= url.id %>" class="delete">

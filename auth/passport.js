@@ -12,13 +12,16 @@ const db = new pg.Client({
 
 db.connect();
 
-
 export function isValidURL(str) {
-  if(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(str)) {
-console.log('YES');
-   } else {
-    throw new Error ("invalid URL!");
-   }
+  if (
+    /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
+      str
+    )
+  ) {
+    console.log("YES");
+  } else {
+    throw new Error("invalid URL!");
+  }
 }
 
 export function truncateString(str, maxLength) {
@@ -30,10 +33,11 @@ export function truncateString(str, maxLength) {
 
 export async function query(currUserEmail) {
   let result = await db.query(
-    "select links.id, longLink, shortLink from links join users on links.user_email = users.email where users.email = $1",
+    "select links.id, long_link, short_link from links join users on links.email = users.email where users.email = $1",
     [currUserEmail]
   );
   let response = result.rows;
+  
   return response;
 }
 
@@ -59,9 +63,8 @@ passport.use(
             "insert into users (email, password) values($1, $2) returning *",
             [userEmail.value, "google"]
           );
-          let secIn = insert.rows[0]
+          let secIn = insert.rows[0];
           return cb(null, secIn.email);
-
         } else {
           return cb(null, userEmail.value);
         }
@@ -79,9 +82,7 @@ passport.use(
   // new strategy (local)
   new Strategy(async function verify(username, password, cb) {
     try {
-      
       // select data from table
-
 
       let user = await db.query("select *  from users where email = $1", [
         username,
@@ -91,36 +92,35 @@ passport.use(
 
       // to check is database result is not null
       if (response.length === 0) {
-        // throw new Error(`${username} is not registered on Shortly!`);
-        return cb(null, false);
+       return cb(null, false, {message: `${username} is not registered on Shortly!`});
       }
 
       try {
-        //  to validate email
+        //  to validate password
         bcrypt.compare(password, response[0].password, (err, result) => {
           // logics
           if (err) {
             // return cb(call back error)
-            return err;
+            return cb(err );
           } else {
             if (result) {
               return cb(null, response[0].email);
             } else {
-              return cb(null, false);
+              return cb(null, false, {message: "Incorrect Password"});
             }
           }
         });
 
         // first error handler
       } catch (error) {
-        console.log(error);
-        return error;
+
+        return cb(error);
       }
 
       // second handler
     } catch (error) {
       console.log(error);
-      return error;
+      cb( error);
     }
   })
 );

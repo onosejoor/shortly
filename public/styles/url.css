@@ -2,9 +2,9 @@
   font-family: "Poppins", sans-serif;
 }
 
-body{
+/* body {
   width: 100vw;
-}
+} */
 .container {
   padding-top: 3%;
 }
@@ -47,6 +47,7 @@ button:hover {
 .nav-items {
   width: 100%;
   display: flex;
+  align-items: center;
 }
 
 .nav-bar a {
@@ -70,9 +71,10 @@ button:hover {
 .right {
   margin-left: auto;
   display: flex;
+  align-items: center;
 }
 
-h1{
+h1 {
   color: hsl(255, 11%, 22%);
 }
 
@@ -186,8 +188,16 @@ h1{
   align-items: center;
   border-radius: 5px;
   height: fit-content;
+
+  div {
+    overflow: hidden;
+    width: 70%;
+  }
   .full {
     font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -272,6 +282,11 @@ h1{
 
 .input2 {
   border: 2px solid red;
+}
+.inputError {
+  color: red;
+  display: none;
+  text-align: left;
 }
 
 .copied {
@@ -390,58 +405,73 @@ h5 {
   display: flex !important;
 }
 
-.block{
+.block {
   display: block;
 }
 
-.formWrapper{
+.formWrapper {
   background-color: white;
   padding: 2%;
   margin: 2% auto;
-  flex-direction: column;
-  display: flex;
+  display: grid;
   justify-content: center;
-  width: 50%;
-  box-shadow: 0px 0px 5px hsl(255, 11%, 22%);
+  grid-template-columns: 1fr 1fr;
+  width: 80%;
+  border-radius: 5px;
+  border: 1px solid hsl(257, 27%, 26%);
+
+  img {
+    height: 400px;
+  }
 }
 
-form[action="/register"],
-form[action="/login"] {
+.registerForm,
+.formLogin {
   flex-direction: column;
   background: transparent;
   font-weight: 500;
   text-align: start;
   border: none;
   display: flex;
+  gap: 10px;
   margin-bottom: 1%;
 }
 
-form[action="/register"] > input,
-form[action="/register"] > input:focus {
+.registerForm > input {
   margin-bottom: 10px;
   height: 40px;
-  border: 0.5x solid black;
+  border: 0.5px solid black;
   padding-left: 1%;
   border-radius: 5px;
 }
 
-form[action="/login"] > input,
-form[action="/login"] > input:focus {
+.formLogin > input {
   margin-bottom: 10px;
   height: 40px;
-  border: 0.5x solid black;
+  border: 0.5px solid black;
   padding-left: 1%;
   border-radius: 5px;
 }
 
-form[action="/login"] > button,
-form[action="/register"] > button {
+.formLogin > button,
+.registerForm > button {
   width: fit-content;
   padding: 1.5% 20px;
   border: none;
   border-radius: 5px;
   margin-bottom: 5px;
   background-color: hsl(257, 27%, 26%);
+}
+
+.registerForm,
+.formLogin {
+  input::placeholder {
+    color: black;
+  }
+  input:focus {
+    border: 2px solid hsl(257, 27%, 26%);
+    outline: none;
+  }
 }
 
 .loader {
@@ -454,20 +484,75 @@ form[action="/register"] > button {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.registerH1 {
+  text-align: center;
 }
 
-.forms{
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.forms {
   display: flex;
 }
 
-form[action="/oauth/google/shortly"] > button {
-  padding: 1.9%;
-  border: 1px solid;
-  border-radius: 5px;
-  background-color: hsl(257, 27%, 26%);
+form[action="/oauth/google/shortly"] {
+  margin: 3% auto;
+  > button {
+    padding: 1.5% 1%;
+    border: 1px solid;
+    border-radius: 5px;
+    font-weight: 400;
+    background-color: transparent;
+    color: black;
+    display: flex;
+    line-height: 1%;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+    transition: .2s all linear;
+
+    span > svg {
+      width: 20px;
+    }
+  }
+}.google:hover{
+  color: white;
+  background-color: hsl(256, 10%, 45%);
+}
+
+.registerLogin {
+  appearance: none !important;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  color: black;
+}
+.registerLogin:hover {
+  background-color: transparent !important;
+}
+
+.googleH3 {
+  padding: 1%;
+  text-align: center;
+}
+
+.login2 {
+  text-align: center;
+  margin: 1em;
+}
+
+@media(min-width: 1200px){
+  .container{
+    max-width: 1400px;
+    margin: auto;
+  }
 }
 
 @media (max-width: 800px) {
@@ -478,8 +563,8 @@ form[action="/oauth/google/shortly"] > button {
   .form > div {
     padding-left: 0;
   }
-  
-  .loader{
+
+  .loader {
     position: absolute;
     left: 40%;
     right: 50%;
@@ -594,7 +679,11 @@ form[action="/oauth/google/shortly"] > button {
   .form > * {
     margin-bottom: 2%;
   }
-
+  .formWrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column-reverse;
+  }
   .sho {
     padding: 5%;
     width: 90%;
@@ -688,7 +777,7 @@ form[action="/oauth/google/shortly"] > button {
     justify-content: center;
   }
 
-  .formWrapper{
+  .formWrapper {
     width: 90%;
   }
 }

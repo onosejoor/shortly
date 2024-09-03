@@ -17,7 +17,7 @@ const port = 3000;
 env.config();
 
 // for the PostgreSQL database connection
-const db = new pg.Client({
+let db = new pg.Client({
   connectionString: process.env.CONNECTION_STRING,
 });
 
@@ -54,6 +54,8 @@ app.get("/", async (req, res) => {
     // selects users links based on their email
     const query2 = await query(pass);
     url = query2;
+    console.log(url);
+
     // render home page
     res.render("index.ejs", {
       url: url,
@@ -116,8 +118,10 @@ app.post("/register", async (req, res) => {
   }
 });
 
+
+
 // to handle login route
-app.post("/login", login);
+app.post("/login", login)
 
 app.post("/delete", async (req, res) => {
   if (req.isAuthenticated()) {
@@ -160,9 +164,6 @@ app.post("/short", async (req, res) => {
       // user longUrl
       let userUrl = req.body.longUrl;
 
-      // truncate string
-      let cater = truncateString(userUrl, 30);
-
       // header for post requests
       let headersList = {
         Accept: "*/*",
@@ -183,8 +184,8 @@ app.post("/short", async (req, res) => {
 
         // insert into database
         let result2 = db.query(
-          "insert into links (longLink, shortLink, user_email) values ($1, $2, $3)",
-          [cater, result.result_url, user]
+          "insert into links (long_link, short_link, email) values ($1, $2, $3)",
+          [userUrl, result.result_url, user]
         );
 
         // redirect to home page
@@ -204,7 +205,7 @@ app.post("/short", async (req, res) => {
       });
     }
   } else {
-    res.redirect("/register");
+    res.redirect("/login");
   }
 });
 
