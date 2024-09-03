@@ -4,37 +4,40 @@
   <img
     src="/images/illustration-working.svg"
     class="head-img"
-    alt="destop-img" />
+    alt="destop-img"
+  />
   <div class="header">
     <h1>More than just shorter links</h1>
 
-    <h3>
+    <p>
       Build your brand’s recognition and get detailed insights on how your links
       are performing.
-    </h3>
+    </p>
 
     <a href="#starter"><button class="starter">Get Started</button></a>
   </div>
 </section>
-<div class="shorten">
-  <div class="sho">
-    <div class="loader"></div>
-    <form action="/short" method="post" class="form">
-      <div>
-        <input
-          name="longUrl"
-          id="input"
-          type="text"
-          placeholder="<%= locals.error ? error:'Shorten a link here...' %>"
-          class="input" />
-          <h5 class="inputError">Enter Your Url </h5>
-      </div>
 
-      <button class="shorten-btn" type="submit">Shorten It!</button>
-    </form>
-  </div>
-</div>
 <section id="stat">
+  <div class="shorten">
+    <div class="sho">
+      <div class="loader"></div>
+      <form action="/short" method="post" class="form">
+        <div>
+          <input
+            name="longUrl"
+            id="input"
+            type="text"
+            placeholder="<%= locals.error ? error:'Shorten a link here...' %>"
+            class="input"
+          />
+          <h5 class="inputError">Enter Your Url</h5>
+        </div>
+  
+        <button class="shorten-btn" type="submit">Shorten It!</button>
+      </form>
+    </div>
+  </div>
   <%if(locals.url) { %> <% url.forEach(url => { %>
   <div class="link">
     <div class="all" id="link">
@@ -55,8 +58,11 @@
     </div>
   </div>
   <% }); %> <% } %>
+</section>
+  <section id="statistics">
+
   <div class="ad">
-    <h2 class="advanced">Advanced Statistics</h2>
+    <h1 class="advanced">Advanced Statistics</h1>
     <p class="adv">
       Track how your links are performing across the web with our advanced
       statistics dashboard.
@@ -65,10 +71,10 @@
 
   <div id="flag">
     <div class="brand flager">
-      <img
-        class="illu"
-        src="/images/icon-brand-recognition.svg"
-        alt="brand regognition" />
+      <div class="illu">
+        <img src="/images/icon-brand-recognition.svg" alt="brand regognition" />
+      </div>
+
       <h4 class="bold con">Brand Recognition</h4>
 
       <p class="state con">
@@ -77,10 +83,10 @@
       </p>
     </div>
     <div class="details flager">
-      <img
-        class="illu"
-        src="/images/icon-detailed-records.svg"
-        alt="detailed-records" />
+      <div class="illu">
+        <img src="/images/icon-detailed-records.svg" alt="detailed-records" />
+      </div>
+
       <h4 class="bold con">Detailed Records</h4>
       <p class="state con">
         Gain insights into who is clicking your links. Knowing when and where
@@ -89,18 +95,23 @@
     </div>
     <div class="line"></div>
     <div class="customizable flager">
-      <img
-        class="illu"
-        src="/images/icon-fully-customizable.svg"
-        alt="icon-fully-customizable" />
+      <div class="illu">
+        <img
+          src="/images/icon-fully-customizable.svg"
+          alt="icon-fully-customizable"
+        />
+      </div>
+
       <h4 class="bold con">Fully Customizable</h4>
       <p class="state con">
         Improve brand awareness and content discoverability through customizable
         links, supercharging audience engagement.
       </p>
     </div>
-  </div>
-</section>
+  </div>    
+  </section>
+
+
 
 <section id="boost">
   <div>
