@@ -54,7 +54,6 @@ app.get("/", async (req, res) => {
     // selects users links based on their email
     const query2 = await query(pass);
     url = query2;
-    console.log(url);
 
     // render home page
     res.render("index.ejs", {

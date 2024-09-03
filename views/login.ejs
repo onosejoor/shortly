@@ -12,7 +12,11 @@
     name="password"
     id="password"
     required
-    placeholder="<%= locals.error ? error: 'Enter password' %>" />
+    placeholder="Enter password" />
+    <% if (locals.error) { %>
+      <h5 class="logRegError"><%= error %></h5>
+   <% } %>
+    
     <button type="submit" id="btn-register">Login</button>   
 </form>     
 <h3 class="googleH3">OR</h3>
