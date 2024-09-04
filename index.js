@@ -4,12 +4,12 @@ import axios from "axios";
 import pg from "pg";
 import session from "express-session";
 import env from "dotenv";
-import { login } from "../auth/login.js";
-import passport, { query } from "../auth/passport.js";
-import registerUser from "../auth/register.js";
-import { truncateString } from "../auth/passport.js";
-import { google } from "../auth/google.js";
-import { isValidURL } from "../auth/passport.js";
+import { login } from "./auth/login.js";
+import passport, { query } from "./auth/passport.js";
+import registerUser from "./auth/register.js";
+import { truncateString } from "./auth/passport.js";
+import { google } from "./auth/google.js";
+import { isValidURL } from "./auth/passport.js";
 
 const app = express();
 const port = 3000;
