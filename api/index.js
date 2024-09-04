@@ -4,16 +4,16 @@ import axios from "axios";
 import pg from "pg";
 import session from "express-session";
 import env from "dotenv";
-import path from "path"
-import ejs from "ejs"
+// import path from "path"
+// import ejs from "ejs"
 import { login } from "../auth/login.js";
 import passport, { query } from "../auth/passport.js";
 import registerUser from "../auth/register.js";
 import { google } from "../auth/google.js";
 import { isValidURL } from "../auth/passport.js";
-import {dirname} from "path";
-import {fileURLToPath} from "url";
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// import {dirname} from "path";
+// import {fileURLToPath} from "url";
+// const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
@@ -48,8 +48,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("view engine", "ejs");
-app.engine("ejs", ejs.__express); // Add this line to set the templating engine
-app.set("views", path.join(__dirname, "./views"));
+// app.engine("ejs", ejs); // Add this line to set the templating engine
+// app.set("views", path.join(__dirname, "./views"));
 
 let pass;
 let url = [];
