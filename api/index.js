@@ -5,7 +5,7 @@ import pg from "pg";
 import session from "express-session";
 import env from "dotenv";
 // import path from "path"
-// import ejs from "ejs"
+import ejs from "ejs"
 import { login } from "../auth/login.js";
 import passport, { query } from "../auth/passport.js";
 import registerUser from "../auth/register.js";
@@ -48,7 +48,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.set("view engine", "ejs");
-// app.engine("ejs", ejs); // Add this line to set the templating engine
+app.engine("ejs", ejs); // Add this line to set the templating engine
 // app.set("views", path.join(__dirname, "./views"));
 
 let pass;
