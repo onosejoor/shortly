@@ -6,11 +6,11 @@ import session from "express-session";
 import env from "dotenv";
 import path from "path"
 import ejs from "ejs"
-import { login } from "./auth/login.js";
-import passport, { query } from "./auth/passport.js";
-import registerUser from "./auth/register.js";
-import { google } from "./auth/google.js";
-import { isValidURL } from "./auth/passport.js";
+import { login } from "../auth/login.js";
+import passport, { query } from "../auth/passport.js";
+import registerUser from "../auth/register.js";
+import { google } from "../auth/google.js";
+import { isValidURL } from "../auth/passport.js";
 import {dirname} from "path";
 import {fileURLToPath} from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
