@@ -52,7 +52,6 @@ passport.use(
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
-      console.log(profile.emails[0]);
       try {
         let userEmail = profile.emails[0];
         let result = await db.query("select *  from users where email = $1", [
