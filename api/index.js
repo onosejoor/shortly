@@ -13,6 +13,7 @@ import { google } from "../auth/google.js";
 import { isValidURL } from "../auth/passport.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import e from "express";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
@@ -56,18 +57,22 @@ let url = [];
 // to render home page
 
 app.get("/", async (req, res) => {
-  if (req.isAuthenticated()) {
-    pass = req.user;
-    // selects users links based on their email
-    const query2 = await query(pass);
-    url = query2;
+  try {
+    if (req.isAuthenticated()) {
+      pass = req.user;
+      // selects users links based on their email
+      const query2 = await query(pass);
+      url = query2;
 
-    // render home page
-    res.render("index.ejs", {
-      url: url,
-    });
-  } else {
-    res.render("index.ejs");
+      // render home page
+      res.render("index.ejs", {
+        url: url,
+      });
+    } else {
+      res.render("index.ejs");
+    }
+  } catch (error) {
+    res.render("index.ejs", { error: error });
   }
 });
 
@@ -159,57 +164,61 @@ app.get("/oauth/google", google);
 
 // to create short url
 app.post("/short", async (req, res) => {
-  if (req.isAuthenticated()) {
-    try {
-      // to get current user email
-      let user = req.user;
-      pass = user;
-
-      // user longUrl
-      let userUrl = req.body.longUrl;
-
-      // header for post requests
-      let headersList = {
-        Accept: "*/*",
-        "Content-Type": "application/x-www-form-urlencoded",
-      };
-      isValidURL(userUrl);
-
+  try {
+    if (req.isAuthenticated()) {
       try {
-        // API
-        const response = await axios.post(
-          basrUrl,
-          `url=${userUrl}`,
-          headersList
-        );
+        // to get current user email
+        let user = req.user;
+        pass = user;
 
-        // API result
-        let result = response.data;
+        // user longUrl
+        let userUrl = req.body.longUrl;
 
-        // insert into database
-        let result2 = db.query(
-          "insert into links (long_link, short_link, email) values ($1, $2, $3)",
-          [userUrl, result.result_url, user]
-        );
+        // header for post requests
+        let headersList = {
+          Accept: "*/*",
+          "Content-Type": "application/x-www-form-urlencoded",
+        };
+        isValidURL(userUrl);
 
-        // redirect to home page
-        res.redirect("/");
+        try {
+          // API
+          const response = await axios.post(
+            basrUrl,
+            `url=${userUrl}`,
+            headersList
+          );
+
+          // API result
+          let result = response.data;
+
+          // insert into database
+          let result2 = db.query(
+            "insert into links (long_link, short_link, email) values ($1, $2, $3)",
+            [userUrl, result.result_url, user]
+          );
+
+          // redirect to home page
+          res.redirect("/");
+        } catch (error) {
+          res.render("index.ejs", {
+            error: "This link can't be shortened",
+            url: url,
+          });
+        }
+
+        // to catch possible error
       } catch (error) {
         res.render("index.ejs", {
-          error: "This link can't be shortened",
+          error: error.message || "This link can't be shortened",
           url: url,
         });
       }
-
-      // to catch possible error
-    } catch (error) {
-      res.render("index.ejs", {
-        error: error.message || "This link can't be shortened",
-        url: url,
-      });
+    } else {
+      res.redirect("/login");
     }
-  } else {
-    res.redirect("/login");
+  } catch (error) {
+    res.render("index.ejs", { error: error });
   }
 });
 
