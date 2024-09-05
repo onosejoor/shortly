@@ -1,6 +1,13 @@
 import passport from "./passport.js";
 import express from "express";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
+
+app.set("view engine", "ejs");
+app.engine("ejs", ejs.__express); // Add this line to set the templating engine
+app.set("views", __dirname + "/views");
 
 export const google = app.get("/oauth/google", (req, res, next) => {
   passport.authenticate("google", (user, info, err) => {
