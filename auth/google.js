@@ -10,7 +10,8 @@ app.set("view engine", "ejs");
 app.engine("ejs", ejs.__express); // Add this line to set the templating engine
 app.set("views", __dirname + "/views");
 
-export const google = app.get("/oauth/google", (req, res, next) => {
+export const google = app.get("/oauth/google",async (req, res, next) => {
+  try {
   passport.authenticate("google", (user, info, err) => {
     if (err) {
       res.render("index.ejs", {
@@ -30,5 +31,11 @@ export const google = app.get("/oauth/google", (req, res, next) => {
         res.redirect("/");
       }
     });
-  })(req, res, next);
+  })(req, res, next);    
+  } catch (error) {
+    res.render("index.ejs", {
+      error: error
+    })
+  }
+
 });
