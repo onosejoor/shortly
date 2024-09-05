@@ -22,5 +22,5 @@ export const google = app.get("/oauth/google", (req, res, next) => {
         res.redirect("/");
       }
     });
-  });
+  })(req, res, next);
 });
