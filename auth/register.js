@@ -1,26 +1,20 @@
-import pg from "pg";
-import env from "dotenv";
 import bcrypt from "bcrypt";
-env.config();
-
-const db = new pg.Client({
-  connectionString: process.env.CONNECTION_STRING,
-});
-
-db.connect();
+import { supabase } from "./supabase.js";
 
 const saltRounds = 10;
 async function registerUser(username, password, cb) {
   try {
 
-    let user = await db.query("select *  from users where email = $1", [
-      username,
-    ]);
+    let {data, error} = await supabase.from("users").select("*").eq("email, $1", [username])
 
-    if (user.rows.length > 0) {
+    if (error) {
+      cb("Error validating user, check network connectivity");
+    }
+
+    if (data.length > 0) {
         cb(`Email ${username} is already registered`);
     } else {
-      // to insert into data
+      // to insert into database
       try {
         // password hashing
         bcrypt.hash(password, saltRounds, async (err, hash) => {
@@ -29,11 +23,11 @@ async function registerUser(username, password, cb) {
             return err;
           } else {
             // insert hashed password into database
-            const result = await db.query(
-              "insert into users (email, password) values($1, $2) returning *",
-              [username, hash]
-            );
-            let user = result.rows[0];
+            const {data, error} = await supabase.from("users").insert({
+              email: username, password: hash
+            }).select("*")
+
+            let user = data[0];
             // redirect to secrets page after login
             console.log(user);
             return cb(null, user);

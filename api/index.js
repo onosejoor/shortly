@@ -1,10 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
-import pg from "pg";
 import session from "express-session";
-import env from "dotenv";
-
 import ejs from "ejs";
 import { login } from "../auth/login.js";
 import passport, { query } from "../auth/passport.js";
@@ -13,20 +10,11 @@ import { google } from "../auth/google.js";
 import { isValidURL } from "../auth/passport.js";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import e from "express";
+import { supabase } from "../auth/supabase.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
-
-env.config();
-
-// for the PostgreSQL database connection
-let db = new pg.Client({
-  connectionString: process.env.CONNECTION_STRING,
-});
-
-db.connect();
 
 // For short URL //
 let basrUrl = "https://cleanuri.com/api/v1/shorten";
@@ -139,7 +127,7 @@ app.post("/delete", async (req, res) => {
       let deleteValue = req.body.deletedId;
 
       //  query to delete
-      await db.query("delete from links where id = $1", [deleteValue]);
+      supabase.from("links").delete().eq("1d, $1", [deleteValue]);
 
       res.redirect("/");
 
@@ -193,10 +181,11 @@ app.post("/short", async (req, res) => {
           let result = response.data;
 
           // insert into database
-          let result2 = db.query(
-            "insert into links (long_link, short_link, email) values ($1, $2, $3)",
-            [userUrl, result.result_url, user]
-          );
+          await supabase.from("links").insert({
+            long_link: userUrl,
+            short_link: result.result_url,
+            email: user,
+          });
 
           // redirect to home page
           res.redirect("/");

@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import bcrypt from "bcrypt";
 import GoogleStrategy from "passport-google-oauth20";
+import { supabase } from "./supabase.js";
 import env from "dotenv";
 import pg from "pg";
 env.config();
@@ -32,13 +33,11 @@ export function truncateString(str, maxLength) {
 }
 
 export async function query(currUserEmail) {
-  let result = await db.query(
-    "select links.id, long_link, short_link from links join users on links.email = users.email where users.email = $1",
-    [currUserEmail]
-  );
-  let response = result.rows;
-  
-  return response;
+  const { data, error } = await supabase
+    .from("users")
+    .select("links.id, long_link, short_link, users(*)")
+    .eq("links.email, $1", [currUserEmail]);
+  return data;
 }
 
 // google autheticator
@@ -55,15 +54,19 @@ passport.use(
     async (accessToken, refreshToken, profile, cb) => {
       try {
         let userEmail = profile.emails[0];
-        let result = await db.query("select *  from users where email = $1", [
-          userEmail.value,
-        ]);
-        if (result.rows.length === 0) {
-          let insert = await db.query(
-            "insert into users (email, password) values($1, $2) returning *",
-            [userEmail.value, "google"]
-          );
-          let secIn = insert.rows[0];
+        const { data } = await supabase
+          .from("users")
+          .select("*")
+          .eq("email, $1", [userEmail.value]);
+        if (data.length === 0) {
+          const { data: insert } = await supabase
+            .from("users")
+            .insert({
+              email: userEmail.value,
+              password: "google",
+            })
+            .select("*");
+          let secIn = insert[0];
           return cb(null, secIn.email);
         } else {
           return cb(null, userEmail.value);
@@ -83,16 +86,19 @@ passport.use(
   new Strategy(async function verify(username, password, cb) {
     try {
       // select data from table
+      const { data: user } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email, $1", [username]);
 
-      let user = await db.query("select *  from users where email = $1", [
-        username,
-      ]);
       // database result
-      let response = user.rows;
+      let response = user;
 
       // to check is database result is not null
       if (response.length === 0) {
-       return cb(null, false, {message: `${username} is not registered on Shortly!`});
+        return cb(null, false, {
+          message: `${username} is not registered on Shortly!`,
+        });
       }
 
       try {
@@ -101,26 +107,25 @@ passport.use(
           // logics
           if (err) {
             // return cb(call back error)
-            return cb(err );
+            return cb(err);
           } else {
             if (result) {
               return cb(null, response[0].email);
             } else {
-              return cb(null, false, {message: "Incorrect Password"});
+              return cb(null, false, { message: "Incorrect Password" });
             }
           }
         });
 
         // first error handler
       } catch (error) {
-
         return cb(error);
       }
 
       // second handler
     } catch (error) {
       console.log(error);
-      cb( error);
+      cb(error);
     }
   })
 );
