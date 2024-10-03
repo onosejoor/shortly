@@ -12,7 +12,7 @@ app.set("views", __dirname + "/views");
 
 export const google = app.get("/oauth/google", async (req, res, next) => {
   try {
-    passport.authenticate("google", (err, user, info) => {
+    passport.authenticate("google", (err, user, info) => {  
       if (err) {
         return next(err);
       }
